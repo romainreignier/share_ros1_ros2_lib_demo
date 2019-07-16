@@ -16,27 +16,32 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # find dependencies
-find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(lib_foo REQUIRED)
+find_package(ament_cmake QUIET)
 
-include_directories(include ${lib_foo_INCLUDE_DIRS})
+if(ament_cmake_FOUND)
+  find_package(rclcpp REQUIRED)
+  find_package(lib_foo REQUIRED)
 
-add_executable(${PROJECT_NAME}_node src/bar_node.cpp)
-ament_target_dependencies(${PROJECT_NAME}_node rclcpp)
-target_link_libraries(${PROJECT_NAME}_node ${lib_foo_LIBRARIES})
+  include_directories(include ${lib_foo_INCLUDE_DIRS})
 
-install(TARGETS ${PROJECT_NAME}_node DESTINATION lib/${PROJECT_NAME})
+  add_executable(${PROJECT_NAME}_node src/bar_node.cpp)
+  ament_target_dependencies(${PROJECT_NAME}_node rclcpp)
+  target_link_libraries(${PROJECT_NAME}_node ${lib_foo_LIBRARIES})
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # uncomment the line when a copyright and license is not present in all source files
-  #set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # uncomment the line when this package is not in a git repo
-  #set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
+  install(TARGETS ${PROJECT_NAME}_node DESTINATION lib/${PROJECT_NAME})
+
+  if(BUILD_TESTING)
+    find_package(ament_lint_auto REQUIRED)
+    # the following line skips the linter which checks for copyrights
+    # uncomment the line when a copyright and license is not present in all source files
+    #set(ament_cmake_copyright_FOUND TRUE)
+    # the following line skips cpplint (only works in a git repo)
+    # uncomment the line when this package is not in a git repo
+    #set(ament_cmake_cpplint_FOUND TRUE)
+    ament_lint_auto_find_test_dependencies()
+  endif()
+
+  ament_package()
+else()
+  message("ament_cmake not found so skipping this package")
 endif()
-
-ament_package()
