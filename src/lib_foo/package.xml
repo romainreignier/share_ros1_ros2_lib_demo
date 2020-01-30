@@ -5,8 +5,6 @@
   <description>A dummy lib to make pure CMake lib to work woth ROS 1 and ROS 2</description>
   <maintainer email="rre@robopec.com">rre</maintainer>
   <license>BSD</license>
-  <buildtool_depend condition="$ROS_VERSION == 1">catkin</buildtool_depend>
-  <buildtool_depend condition="$ROS_VERSION == 2">ament_cmake</buildtool_depend>
   <export>
     <build_type>cmake</build_type>
   </export>
